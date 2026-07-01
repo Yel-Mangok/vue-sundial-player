@@ -28,6 +28,71 @@ export default function usePlayer() {
     function formatTime(seconds) {
         const m = Math.floor(seconds / 60);
         const s = Math.floor(seconds % 60).toString().padStart(2, "0");
-        return `${}:${s}`;
+        return `${m}:${s}`;
+      }
+
+        function startTicking() {
+            stopTicking()
+            tickInterval = setInterval(() => {
+                if (!currentTrack.value) return;
+                if (progress.value < currentTrack.value.duration){
+                    progress.value += 1;
+                } else {
+                    next();
+                }
+            }, 1000);
+
+        }
+
+        function stopTicking() {
+            if (tickInterval) clearInterval(tickInterval);
+            tickInterval = null;
+        }
+
+        function play(index = null) {
+            if (index != null) {
+                currentIndex.value = index;
+                progress.value = 0;
+            }
+            isPlaying.value = true;
+            startTicking();
+        }
+
+        function pause() {
+            isPlaying.value = false;
+            stopTicking();
+        }
+
+        function toggle() {
+            isPlaying.value ? pause() : play();
+        }
+
+        function next() {
+            currentIndex.value = (currentIndex + 1) % queue.value.length;
+            progress.value = 0;
+            if (isPlaying.value) startTicking();
+        }
+
+        function prev() {
+            currentIndex.value = 
+            (currentIndex - 1 + queue.value.length) % queue.value.length;
+            progress.value = 0;
+            if(isPlaying.value) startTicking();
+        }
+
+        function seekTo(percent) {
+            if (!currentTrack.value) return;
+            progress.value = Math.round((percent / 100) * currentTrack.value.duration);
+        }
+
+        function setVolume(v){
+            volume.value = v;
+        }
+
+        return {
+            queue, currentIndex, currentTrack, isPlaying,
+            progress, volume, progressPercent, formattedProgress,
+            formattedDuration, play, pause,
+            toggle, next, prev, seekTo, setVolume, formatTime
+        }
     }
-}
