@@ -1,15 +1,15 @@
-import { createRouter } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import LibraryView from "../pages/LibraryView.vue";
 import ArtistView from "../pages/ArtistView.vue";
 
 
 const routes = [
-    { path: "/", Component: LibraryView },
-    { path: "/artists", Component: LibraryView },
+    { path: "/", component: LibraryView },
+    { path: "/artists", component: ArtistView},
 ];
 
 const router = createRouter({
-    history: createRouter(),
+    history: createWebHistory(),
     routes
 });
 
