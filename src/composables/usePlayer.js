@@ -68,14 +68,14 @@ let tickInterval = null;
         }
 
         function next() {
-            currentIndex.value = (currentIndex + 1) % queue.value.length;
+            currentIndex.value = (currentIndex.value + 1) % queue.value.length;
             progress.value = 0;
             if (isPlaying.value) startTicking();
         }
 
         function prev() {
             currentIndex.value = 
-            (currentIndex - 1 + queue.value.length) % queue.value.length;
+            (currentIndex.value - 1 + queue.value.length) % queue.value.length;
             progress.value = 0;
             if(isPlaying.value) startTicking();
         }
